@@ -5,6 +5,11 @@
 #include "utility/MPU9250.h"
 #include "utility/quaternionFilters.h"
 #include <M5StackSAM.h>
+#include "AudioFileSourceSD.h"
+#include "AudioFileSourceID3.h"
+#include "AudioGeneratorMP3.h"
+#include "AudioOutputI2S.h"
+
 
 String getWiFiMac() {
   uint8_t baseMac[6];
@@ -17,6 +22,37 @@ String getWiFiMac() {
 void acc() {
   MyMenu.drawAppMenu(F("ACC"),F(""),F("ESC"),F(""));
   MyMenu.show();
+}
+
+void appMusic(){
+  MyMenu.drawAppMenu(F("Music"),F(""),F("ESC"),F(""));
+
+  while(M5.BtnB.wasPressed()){
+    M5.update();
+  }
+    AudioGeneratorMP3 *mp3;
+    AudioFileSourceSD *file;
+    AudioOutputI2S *out;
+    AudioFileSourceID3 *id3;
+
+    file = new AudioFileSourceSD("/pno-cs.mp3");
+    id3 = new AudioFileSourceID3(file);
+    out = new AudioOutputI2S(0, 1); // Output to builtInDAC
+    out->SetOutputModeMono(true);
+    mp3 = new AudioGeneratorMP3();
+    mp3->begin(id3, out);
+
+    while(!M5.BtnB.wasPressed()){
+      if (mp3->isRunning()) {
+        if (!mp3->loop()) mp3->stop();
+      } else {
+      Serial.printf("MP3 done\n");
+      delay(1000);
+      }
+      M5.update();
+    }
+
+    MyMenu.show();
 }
 
 //void appTEMPLATE(){

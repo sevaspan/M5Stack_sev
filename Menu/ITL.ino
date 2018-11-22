@@ -12,7 +12,8 @@ void dummy(){
 
 void setup() {
   M5.begin();
-  M5.lcd.setBrightness(90);  
+  M5.lcd.setBrightness(90);
+  M5.lcd.set  
   Serial.begin(115200);
   Wire.begin();
   WiFi.mode(WIFI_STA);

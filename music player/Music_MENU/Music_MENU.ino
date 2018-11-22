@@ -13,7 +13,8 @@ void dummy(){
 
 void setup() {
   M5.begin();
-  M5.lcd.setBrightness(195);  
+  M5.lcd.setBrightness(195);
+  M5.Speaker.setVolume(1);  
   Serial.begin(115200);
   Wire.begin();
 
@@ -46,6 +47,7 @@ void setup() {
   MyMenu.addMenuItem(0,"CONFIGURATION","<","OK",">",3,dummy);
   MyMenu.addMenuItem(0,"ABOUT","<","OK",">",-1,appAbout);
   MyMenu.addMenuItem(0, "ACCELEROMETER","<","OK",">",-1,acc);
+  MyMenu.addMenuItem(0, "Music","<","OK",">",1,appMusic);
 
   MyMenu.addMenuItem(1,"WiFi SCANNER","<","OK",">",-1,appWiFiScanner);
   MyMenu.addMenuItem(1,"I2C SCANNER","<","OK",">",-1,appIICScanner);
